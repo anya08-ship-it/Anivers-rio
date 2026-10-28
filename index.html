@@ -1,1 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uma missão especial 🎮</title>  
+  <style>
+    * { box-sizing: border-box; }
 
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px 16px;
+      background: radial-gradient(ellipse at top, #302054, transparent 55%), #100f20;
+      color: #f8f5ff;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .game {
+      width: 100%;
+      max-width: 680px;
+      border: 2px solid #514477;
+      border-radius: 20px;
+      background: #141227;
+      padding: 28px;
+      box-shadow: 0 0 35px #a78bfa20;
+    }
+
+    .top {
+      text-align: center;
+      border-bottom: 1px solid #514477;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .pixel { font-size: 42px; margin: 8px; }
+    .tag { color: #f0abfc; letter-spacing: 3px; font-size: 12px; font-weight: bold; }
+    h1 { font-size: clamp(25px, 5vw, 38px); }
+    h2 { color: #f0abfc; }
+    p { line-height: 1.7; color: #c4bddb; }
+
+    .panel {
+      background: #1d1a35;
+      border: 1px solid #514477;
+      padding: 22px;
+      border-radius: 14px;
+      margin: 18px 0;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: #c4bddb;
+    }
+
+    .progress {
+      height: 9px;
+      background: #37304f;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    #bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #a78bfa, #f0abfc);
+      transition: width 0.3s;
+    }
+
+    .mission { border-left: 4px solid #a78bfa; padding-left: 16px; margin: 20px 0; }
+
+    label { display: block; margin: 18px 0 8px; font-weight: bold; }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 9px;
+      border: 1px solid #7766a5;
+      background: #100f20;
+      color: white;
+      font-size: 16px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: 14px 18px;
+      background: #a78bfa;
+      color: #171128;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 14px;
+      width: 100%;
+    }
+
+    .secondary { background: #37304f; color: white; }
+    #feedback { min-height: 28px; font-weight: bold; }
+    .achievement { display: flex; align-items: center; gap: 14px; background: #27213f; border-radius: 10px; padding: 12px; margin-top: 10px; }
+    .achievement span { font-size: 26px; }
+    .achievement p { margin: 3px 0; }
+    .locked { opacity: 0.4; }
+    .hidden { display: none; }
+    .ending { text-align: center; padding: 12px 0; }
+
+    footer {
+      text-align: center;
+      color: #8f85ad;
+      font-size: 12px;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+  <main class="game">
+    <header class="top">
+      <div class="pixel">🎮✨</div>
+      <div class="tag">MISSÃO ESPECIAL • PLAYER 1</div>
+      <h1>Uma missão para você!</h1>
+      <p>Uma aventura feita especialmente para alguém muito especial.</p>
+    </header>
+
+    <div class="stats">
+      <span id="levelText">FASE 1 DE 3</span>
+      <span id="score">🏆 0 conquistas</span>
+    </div>
+    <div class="progress"><div id="bar"></div></div>
+
+    <section class="panel" id="gamePanel">
+      <div class="tag">NOVA MISSÃO DESBLOQUEADA</div>
+      <h2 id="phaseTitle">Fase 1 — O começo</h2>
+      <p id="phaseDescription">Toda grande aventura começa com uma pista. Descubra a palavra secreta para avançar!</p>
+
+      <div class="mission">
+        <strong>📜 Sua pista:</strong>
+        <p id="clue">Aqui vai aparecer a primeira pista que você preparar.</p>
+      </div>
+
+      <label for="password">Digite a senha para desbloquear a próxima fase:</label>
+      <input id="password" type="text" placeholder="Sua resposta..." autocomplete="off">
+      <button id="checkButton" onclick="checkAnswer()">🔓 Desbloquear fase</button>
+      <p id="feedback" aria-live="polite"></p>
+    </section>
+
+    <section class="panel">
+      <h2>🏆 Mural de conquistas</h2>
+      <div class="achievement" id="badge1">
+        <span>🔒</span>
+        <div><strong>Primeiro passo</strong><p>Complete a primeira fase.</p></div>
+      </div>
+      <div class="achievement locked" id="badge2">
+        <span>🔒</span>
+        <div><strong>Caçador de pistas</strong><p>Complete a segunda fase.</p></div>
+      </div>
+      <div class="achievement locked" id="badge3">
+        <span>🔒</span>
+        <div><strong>Lenda desbloqueada</strong><p>Conclua a missão especial!</p></div>
+      </div>
+    </section>
+
+    <section class="panel ending hidden" id="ending">
+      <div class="pixel">🎂🎉💜</div>
+      <h2>MISSÃO CONCLUÍDA!</h2>
+      <p>Você desbloqueou a última fase e conquistou todas as medalhas!</p>
+      <p>Feliz aniversário! Que sua próxima volta ao sol seja cheia de aventuras, jogos, risadas e coisas incríveis. Você é uma pessoa muito especial!</p>
+      <p>🏆 Conquista lendária desbloqueada: <strong>Amizade de outro nível</strong></p>
+    </section>
+
+    <footer>FEITO COM CARINHO • SAVE POINT ❤️</footer>
+  </main>
